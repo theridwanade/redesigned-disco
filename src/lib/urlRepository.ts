@@ -15,19 +15,13 @@ export const saveUrl = async ({shortCode, url}: { shortCode: string, url: string
     }
 }
 export const getUrl = async (shortCode: string): Promise<string | null> => {
-    const client = await pool.connect();
     try {
-        const selectQuery = 'SELECT url FROM url WHERE short_code = $1';
-        const result = await client.query(selectQuery, [shortCode]);
-        if (result.rows.length > 0) {
-            console.log(result);
-            return result.rows[0].url.split(",")[1];
-        } else {
-            return null;
-        }
-    } catch (error) {
-        throw error;
-    } finally {
-        client.release();
+        const query = 'SELECT original_url FROM url WHERE short_code = $1';
+        const { rows } = await pool.query(query, [shortCode]);
+        console.log(rows);
+        return rows[0]?.original_url ?? null;
+    } catch (err) {
+        console.error('getUrl error', err);
+        throw err;
     }
-}
+};
