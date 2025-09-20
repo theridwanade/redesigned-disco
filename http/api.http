@@ -1,0 +1,12 @@
+POST http://localhost:3000/shorten
+Content-Type: application/json
+
+{
+  "url": "https://www.google.com"
+}
+
+> {% client.global.set("shortUrl", response.body.shortUrl) %}
+
+
+### Use saved variable for next call
+GET {{shortUrl}}
