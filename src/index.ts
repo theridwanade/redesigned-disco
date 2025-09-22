@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import {customAlphabet} from "nanoid";
 import {getUrl, saveUrl} from "./lib/urlRepository";
+import { verifyUrl } from "./lib/verifyUrl";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -21,6 +22,10 @@ app.post("/shorten", async (req, res) => {
     const { url } = req.body;
     if(!url) {
         return res.status(400).json({ error: "URL is required" });
+    }
+    const urlIsValid = verifyUrl(url);
+    if(!urlIsValid) {
+        return res.status(400).json({ error: "Invalid URL format" });
     }
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     const shortid = customAlphabet(alphabet, 6)();

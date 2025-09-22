@@ -18,7 +18,6 @@ export const getUrl = async (shortCode: string): Promise<string | null> => {
     try {
         const query = 'SELECT original_url FROM url WHERE short_code = $1';
         const { rows } = await pool.query(query, [shortCode]);
-        console.log(rows);
         return rows[0]?.original_url ?? null;
     } catch (err) {
         console.error('getUrl error', err);
