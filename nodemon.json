@@ -8,5 +8,6 @@
   "watch": [
     "src",
     "views"
-  ]
+  ],
+  "delay": "100"
 }
