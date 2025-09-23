@@ -1,11 +1,12 @@
 {
   "exec": "ts-node ./src/index.ts",
-  "ext": "ts,json",
+  "ext": "ts,json,ejs",
   "ignore": [
     "src/**/*.spec.ts",
     "node_modules"
   ],
   "watch": [
-    "src"
+    "src",
+    "views"
   ]
 }
