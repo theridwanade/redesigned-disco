@@ -53,4 +53,10 @@ const runMigrations = async () => {
     }
 };
 
-runMigrations();
+(async () => {
+    try {
+        await runMigrations();
+    } catch (e) {
+        console.error('Migration script failed', e);
+    }
+})();
