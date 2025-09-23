@@ -4,6 +4,7 @@ import morgan from "morgan";
 import {customAlphabet} from "nanoid";
 import {getUrl, saveUrl} from "./lib/urlRepository";
 import { verifyUrl } from "./lib/verifyUrl";
+import path from "path";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -11,10 +12,15 @@ const PORT = Number(process.env.PORT) || 3000;
 app.use(morgan("dev"));
 app.use(express.json());
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "..", "views"));
+app.use(express.static(path.join(__dirname, "..", "public")));
+
+
 const urlDatabase: Map<string, string> = new Map();
 
 app.get("/", (req, res) => {
-    res.send("Hello, World!");
+    res.render("index", {title: "URL Shortener"});
 })
 
 
@@ -51,5 +57,5 @@ app.get("/:shortid", async (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`Server is running on =http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 })
