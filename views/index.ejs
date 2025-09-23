@@ -10,15 +10,53 @@
 <div>
     <h1 class="text-5xl p-3 text-center text-blue-200">URL Shortener</h1>
 </div>
-<div class="h-[400px] flex justify-center items-center w-full">
-    <form action="/shorten" method="POST" class="flex flex-col items-center w-full">
-        <input type="url" name="url" placeholder="Enter URL to shorten" required class="border p-2 w-1/2 mb-4 rounded">
+<div class="h-[300px] flex justify-center items-center w-full">
+    <form id="form" class="flex flex-col items-center w-full">
+        <input id="urlInput" placeholder="Enter URL to shorten" required class="border p-2 w-1/2 mb-4 rounded">
         <button type="submit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Shorten URL</button>
     </form>
+</div>
+
+<div class="w-full hidden" id="shortenedUrlContainer">
+    <div class="text-center">
+        <div class="flex items-center justify-center w-full gap-x-4 mb-2">
+            <p>Shortened URL:</p>
+            <a href="" class="text-blue-500 underline" target="_blank" id="shortenedUrl">sbyvhs</a>
+        </div>
+    </div>
 </div>
 
 <div class="text-center mt-4">
     <p class="text-gray-600">Shorten your URL easily!</p>
 </div>
+<script>
+    const form = document.getElementById('form');
+    const urlInput = document.getElementById('urlInput');
+    const shortenedUrl = document.getElementById('shortenedUrl');
+    const shortenedUrlContainer = document.getElementById('shortenedUrlContainer');
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const url = urlInput.value;
+
+        try {
+
+            const response = await fetch('/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({url})
+            });
+            const data = await response.json();
+            console.log(data);
+            shortenedUrlContainer.classList.remove('hidden');
+            shortenedUrl.href = data.shortUrl;
+            shortenedUrl.textContent = data.shortUrl;
+        } catch (error) {
+            console.error(error.message);
+        }
+    })
+</script>
 </body>
 </html>
